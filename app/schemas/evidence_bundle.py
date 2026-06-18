@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.observation import Observation
 from app.schemas.thermal_finding import ThermalFinding
@@ -14,3 +14,7 @@ class EvidenceBundle(BaseModel):
     thermal_images: list[str]
 
     thermal_findings: list[ThermalFinding]
+
+    evidence_refs: list[str] = Field(
+        default_factory=list
+    )

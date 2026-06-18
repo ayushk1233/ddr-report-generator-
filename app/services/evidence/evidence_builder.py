@@ -56,7 +56,12 @@ class EvidenceBuilder:
                     thermal_images=[],
 
                     thermal_findings=
-                    thermal_pool
+                    thermal_pool,
+
+                    evidence_refs=[
+                        f"inspection_page_{obs.page_number}"
+                        for obs in area_observations
+                    ]
                 )
             )
 
