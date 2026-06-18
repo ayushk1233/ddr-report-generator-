@@ -38,11 +38,13 @@ class EvidenceBuilder:
             EvidenceBundle
         ] = []
 
-        thermal_pool = (
-            thermal_findings
-        )
-
         for area, area_observations in grouped.items():
+
+            area_thermal_findings = [
+                finding
+                for finding in thermal_findings
+                if finding.area == area
+            ]
 
             bundles.append(
                 EvidenceBundle(
@@ -56,7 +58,7 @@ class EvidenceBuilder:
                     thermal_images=[],
 
                     thermal_findings=
-                    thermal_pool,
+                    area_thermal_findings,
 
                     evidence_refs=[
                         f"inspection_page_{obs.page_number}"

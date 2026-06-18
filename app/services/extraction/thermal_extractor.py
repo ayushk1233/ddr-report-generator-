@@ -17,7 +17,8 @@ class ThermalExtractor:
 
     def extract(
         self,
-        text: str
+        text: str,
+        area: str | None = None
     ) -> ThermalFinding | None:
 
         hotspot_match = re.search(
@@ -55,6 +56,7 @@ class ThermalExtractor:
         )
 
         return ThermalFinding(
+            area=area,
             image_id="unknown",
             hotspot=hotspot,
             coldspot=coldspot,

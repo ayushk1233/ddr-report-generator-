@@ -7,6 +7,8 @@ class ThermalFinding(BaseModel):
 
     page_number: int
 
+    area: str | None = None
+
     image_id: str
 
     hotspot: float
