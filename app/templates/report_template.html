@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DDR Report</title>
+</head>
+<body>
+
+<h1>Detailed Diagnostic Report</h1>
+
+<h2>Property Issue Summary</h2>
+<p>{{ report.property_issue_summary }}</p>
+
+<h2>Evidence Bundles</h2>
+
+{% for bundle in report.evidence_bundles %}
+
+<h3>{{ bundle.area }}</h3>
+
+<ul>
+{% for observation in bundle.observations %}
+<li>
+{{ observation.issue }}
+(Page {{ observation.page_number }})
+</li>
+{% endfor %}
+</ul>
+
+{% endfor %}
+
+<h2>Root Causes</h2>
+
+<ul>
+{% for root_cause in report.root_causes %}
+<li>
+<strong>{{ root_cause.cause }}</strong><br>
+{{ root_cause.rationale }}
+</li>
+{% endfor %}
+</ul>
+
+<h2>Severity Assessments</h2>
+
+<ul>
+{% for severity in report.severity_assessments %}
+<li>
+{{ severity.level }}
+—
+{{ severity.rule_triggered }}
+</li>
+{% endfor %}
+</ul>
+
+<h2>Recommendations</h2>
+
+<ul>
+{% for recommendation in report.recommendations %}
+<li>
+{{ recommendation.priority }}
+:
+{{ recommendation.recommendation }}
+</li>
+{% endfor %}
+</ul>
+
+<h2>Missing Information</h2>
+
+<ul>
+{% for item in report.missing_information %}
+<li>{{ item }}</li>
+{% endfor %}
+</ul>
+
+<h2>Conflicts</h2>
+
+<ul>
+{% for item in report.conflicts %}
+<li>{{ item }}</li>
+{% endfor %}
+</ul>
+
+<h2>Processing Metadata</h2>
+
+<ul>
+<li>
+Confidence:
+{{ report.metadata.confidence }}
+</li>
+
+<li>
+Model Version:
+{{ report.metadata.model_version }}
+</li>
+
+<li>
+Extraction Time:
+{{ report.metadata.extraction_time_seconds }}
+</li>
+</ul>
+
+</body>
+</html>

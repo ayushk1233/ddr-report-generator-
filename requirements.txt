@@ -16,3 +16,5 @@ reportlab
 sqlalchemy
 
 pytest
+
+weasyprint==66.0
