@@ -1,30 +1,10 @@
 import re
 
 from app.schemas.observation import Observation
+from app.services.extraction.patterns import OBSERVATION_PATTERNS
 
 
 class ObservationExtractor:
-
-    AREA_PATTERNS = [
-        "Hall",
-        "Bedroom",
-        "Master Bedroom",
-        "Kitchen",
-        "Common Bathroom",
-        "Parking",
-        "External Wall"
-    ]
-
-    ISSUE_PATTERNS = [
-        "Dampness",
-        "Leakage",
-        "Seepage",
-        "Crack",
-        "Cracks",
-        "Tile Hollowness",
-        "Efflorescence",
-        "Plumbing Issue"
-    ]
 
     def extract(
         self,
@@ -34,16 +14,9 @@ class ObservationExtractor:
 
         observations: list[Observation] = []
 
-        for area in self.AREA_PATTERNS:
+        for pattern, area, issue in OBSERVATION_PATTERNS:
 
-            if area.lower() not in text.lower():
-                continue
-
-            for issue in self.ISSUE_PATTERNS:
-
-                if issue.lower() not in text.lower():
-                    continue
-
+            if re.search(pattern, text, re.IGNORECASE | re.DOTALL):
                 observations.append(
                     Observation(
                         area=area,
