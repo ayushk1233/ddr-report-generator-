@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 
 
 class Observation(BaseModel):
-    observation_id: UUID = uuid4()
+    observation_id: UUID = Field(default_factory=uuid4)
 
     area: str
     issue: str

@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from uuid import UUID, uuid4
 
 
 class ThermalFinding(BaseModel):
-    finding_id: UUID = uuid4()
+    finding_id: UUID = Field(default_factory=uuid4)
 
     page_number: int
 

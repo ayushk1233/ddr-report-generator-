@@ -46,6 +46,13 @@ class EvidenceBuilder:
                 if finding.area == area
             ]
 
+            if not area_thermal_findings:
+
+                area_thermal_findings = [
+                    f for f in thermal_findings
+                    if f.area is None
+                ]
+
             bundles.append(
                 EvidenceBundle(
                     area=area,

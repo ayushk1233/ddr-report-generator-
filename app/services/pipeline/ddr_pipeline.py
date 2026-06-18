@@ -116,7 +116,8 @@ class DDRPipeline:
 
             finding = (
                 self.thermal_extractor.extract(
-                    page.text
+                    text=page.text,
+                    page_number=page.page_number
                 )
             )
 

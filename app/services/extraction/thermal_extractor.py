@@ -18,6 +18,7 @@ class ThermalExtractor:
     def extract(
         self,
         text: str,
+        page_number: int,
         area: str | None = None
     ) -> ThermalFinding | None:
 
@@ -56,6 +57,7 @@ class ThermalExtractor:
         )
 
         return ThermalFinding(
+            page_number=page_number,
             area=area,
             image_id="unknown",
             hotspot=hotspot,
