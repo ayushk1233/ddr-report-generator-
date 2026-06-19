@@ -4,6 +4,9 @@ from jinja2 import Environment
 from jinja2 import FileSystemLoader
 
 from app.schemas.ddr_report import DDRReport
+from app.services.reports.report_formatter import (
+    ReportFormatter
+)
 
 
 class HTMLRenderer:
@@ -24,7 +27,7 @@ class HTMLRenderer:
 
         self.template = (
             environment.get_template(
-                "report_template.html"
+                "report_template_v3.html"
             )
         )
 
@@ -33,6 +36,12 @@ class HTMLRenderer:
         report: DDRReport
     ) -> str:
 
+        sections = (
+            ReportFormatter()
+            .format(report)
+        )
+
         return self.template.render(
-            report=report
+            report=report,
+            sections=sections
         )

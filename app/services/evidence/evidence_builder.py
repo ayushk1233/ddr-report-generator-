@@ -1,5 +1,9 @@
 from collections import defaultdict
 
+from app.services.evidence.thermal_correlator import (
+    ThermalCorrelator
+)
+
 from app.schemas.evidence_bundle import (
     EvidenceBundle
 )
@@ -53,6 +57,19 @@ class EvidenceBuilder:
                     if f.area is None
                 ]
 
+            correlator = ThermalCorrelator()
+            
+            mapping = correlator.correlate(
+                area_observations,
+                area_thermal_findings
+            )
+            
+            correlated_findings = []
+            for findings in mapping.values():
+                for f in findings:
+                    if f not in correlated_findings:
+                        correlated_findings.append(f)
+
             bundles.append(
                 EvidenceBundle(
                     area=area,
@@ -65,7 +82,7 @@ class EvidenceBuilder:
                     thermal_images=[],
 
                     thermal_findings=
-                    area_thermal_findings,
+                    correlated_findings,
 
                     evidence_refs=[
                         f"inspection_page_{obs.page_number}"

@@ -1,9 +1,7 @@
-from app.schemas.area_report_section import (
-    AreaReportSection
-)
+from app.schemas.ddr_report import DDRReport
 
-from app.schemas.ddr_report import (
-    DDRReport
+from app.services.reports.report_section import (
+    ReportSection
 )
 
 
@@ -12,16 +10,18 @@ class ReportFormatter:
     def format(
         self,
         report: DDRReport
-    ) -> list[AreaReportSection]:
+    ) -> list[ReportSection]:
 
-        sections = []
+        sections: list[
+            ReportSection
+        ] = []
 
         for index, bundle in enumerate(
             report.evidence_bundles
         ):
 
             sections.append(
-                AreaReportSection(
+                ReportSection(
                     area=bundle.area,
 
                     observations=
@@ -34,10 +34,14 @@ class ReportFormatter:
                     report.root_causes[index],
 
                     severity=
-                    report.severity_assessments[index],
+                    report.severity_assessments[
+                        index
+                    ],
 
                     recommendation=
-                    report.recommendations[index],
+                    report.recommendations[
+                        index
+                    ],
 
                     evidence_refs=
                     bundle.evidence_refs
