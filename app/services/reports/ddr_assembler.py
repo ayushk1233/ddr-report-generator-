@@ -32,6 +32,7 @@ class DDRAssembler:
         root_causes: list[RootCause],
         severities: list[SeverityAssessment],
         recommendations: list[Recommendation],
+        area_narratives: list[str],
         conflicts: list[str],
         missing_information: list[str],
         metadata: ProcessingMetadata
@@ -49,6 +50,9 @@ class DDRAssembler:
 
             recommendations=
             recommendations,
+
+            area_narratives=
+            area_narratives,
 
             additional_notes=[],
 

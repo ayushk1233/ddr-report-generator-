@@ -44,7 +44,10 @@ class ReportFormatter:
                     ],
 
                     evidence_refs=
-                    bundle.evidence_refs
+                    bundle.evidence_refs,
+
+                    narrative=
+                    report.area_narratives[index]
                 )
             )
 

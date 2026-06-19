@@ -40,6 +40,14 @@ from app.services.reports.ddr_assembler import (
     DDRAssembler
 )
 
+from app.services.llm.narrative_generator import (
+    NarrativeGenerator
+)
+
+from app.services.llm.executive_summary_generator import (
+    ExecutiveSummaryGenerator
+)
+
 
 class DDRPipeline:
 
@@ -140,6 +148,8 @@ class DDRPipeline:
 
         recommendations = []
 
+        area_narratives = []
+
         conflicts = []
 
         missing_information = []
@@ -183,6 +193,20 @@ class DDRPipeline:
                 recommendation
             )
 
+            narrative = (
+                NarrativeGenerator()
+                .generate_area_narrative(
+                    observation=bundle.observations[0],
+                    root_cause=root_cause,
+                    severity=severity,
+                    recommendation=recommendation
+                )
+            )
+
+            area_narratives.append(
+                narrative.narrative
+            )
+
             conflicts.extend(
                 self.quality_gate.detect_conflicts(
                     bundle
@@ -210,9 +234,16 @@ class DDRPipeline:
             )
         )
 
+        summary = (
+            ExecutiveSummaryGenerator()
+            .generate(
+                area_narratives
+            )
+        )
+
         return self.ddr_assembler.assemble(
             summary=
-            "Automated DDR generated.",
+            summary,
 
             bundles=bundles,
 
@@ -224,6 +255,9 @@ class DDRPipeline:
 
             recommendations=
             recommendations,
+
+            area_narratives=
+            area_narratives,
 
             conflicts=
             conflicts,

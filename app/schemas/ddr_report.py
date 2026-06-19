@@ -18,6 +18,8 @@ class DDRReport(BaseModel):
 
     recommendations: list[Recommendation]
 
+    area_narratives: list[str]
+
     additional_notes: list[str]
 
     missing_information: list[str]

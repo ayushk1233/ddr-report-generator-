@@ -22,3 +22,5 @@ class ReportSection(BaseModel):
     recommendation: Recommendation
 
     evidence_refs: list[str]
+
+    narrative: str = ""

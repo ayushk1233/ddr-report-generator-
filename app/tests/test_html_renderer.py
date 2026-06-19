@@ -22,6 +22,8 @@ def test_renderer_returns_html():
 
         recommendations=[],
 
+        area_narratives=[],
+
         additional_notes=[],
 
         missing_information=[],

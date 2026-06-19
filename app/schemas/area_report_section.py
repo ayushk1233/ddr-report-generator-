@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.observation import Observation
 from app.schemas.thermal_finding import ThermalFinding
@@ -21,3 +21,5 @@ class AreaReportSection(BaseModel):
     recommendation: Recommendation
 
     evidence_refs: list[str]
+
+    narrative: str = ""

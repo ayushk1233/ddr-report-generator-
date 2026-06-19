@@ -1,5 +1,6 @@
 from app.schemas.ddr_report import DDRReport
 from app.schemas.evidence_bundle import EvidenceBundle
+from app.schemas.observation import Observation
 from app.schemas.root_cause import RootCause
 from app.schemas.severity import SeverityAssessment, SeverityLevel
 from app.schemas.recommendation import Recommendation, RecommendationPriority
@@ -13,7 +14,15 @@ def build_sample_report() -> DDRReport:
         evidence_bundles=[
             EvidenceBundle(
                 area="Hall",
-                observations=[],
+                observations=[
+                    Observation(
+                        area="Hall",
+                        issue="Test Issue",
+                        description="Test Description",
+                        page_number=1,
+                        confidence=1.0
+                    )
+                ],
                 inspection_images=[],
                 thermal_images=[],
                 thermal_findings=[],
@@ -33,6 +42,9 @@ def build_sample_report() -> DDRReport:
         ],
         recommendations=[
             Recommendation(recommendation="Test Rec", priority=RecommendationPriority.LOW, linked_issue="Test")
+        ],
+        area_narratives=[
+            "Test Narrative"
         ],
         additional_notes=[],
         missing_information=[],
