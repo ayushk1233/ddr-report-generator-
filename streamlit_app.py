@@ -118,19 +118,39 @@ if st.button(
             "DDR generated successfully."
         )
 
-        st.subheader(
-            "Executive Summary"
-        )
+        st.subheader("Executive Summary")
+        st.write(report.property_issue_summary)
 
-        st.write(
-            report.property_issue_summary
-        )
+        st.subheader("Property Risk Overview")
+        
+        high_count = len([s for s in report.severity_assessments if s.level.value == "HIGH"])
+        medium_count = len([s for s in report.severity_assessments if s.level.value == "MEDIUM"])
+        low_count = len([s for s in report.severity_assessments if s.level.value == "LOW"])
+        
+        col1, col2, col3 = st.columns(3)
+        col1.metric("High Risk", high_count)
+        col2.metric("Medium Risk", medium_count)
+        col3.metric("Low Risk", low_count)
 
-        with open(
-            pdf_file,
-            "rb",
-        ) as f:
+        if report.missing_information or report.conflicts:
+            st.subheader("Quality Review")
+            if report.missing_information:
+                st.write("**Missing Information:**")
+                for item in report.missing_information:
+                    st.write(f"- {item}")
+            if report.conflicts:
+                st.write("**Conflicts:**")
+                for item in report.conflicts:
+                    st.write(f"- {item}")
 
+        st.subheader("Processing Metadata")
+        st.write(f"- **Confidence Score:** {int(report.metadata.confidence * 100)}%")
+        st.write(f"- **Engine Version:** {report.metadata.model_version}")
+        st.write(f"- **Processing Time:** {report.metadata.extraction_time_seconds:.2f} seconds")
+
+        st.markdown("---")
+
+        with open(pdf_file, "rb") as f:
             st.download_button(
                 label="📄 Download DDR Report",
                 data=f.read(),
