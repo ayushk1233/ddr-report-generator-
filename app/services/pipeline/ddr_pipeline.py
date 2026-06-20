@@ -40,12 +40,8 @@ from app.services.reports.ddr_assembler import (
     DDRAssembler
 )
 
-from app.services.llm.narrative_generator import (
-    NarrativeGenerator
-)
-
-from app.services.llm.executive_summary_generator import (
-    ExecutiveSummaryGenerator
+from app.services.llm.ddr_intelligence_generator import (
+    DDRIntelligenceGenerator
 )
 
 
@@ -105,11 +101,21 @@ class DDRPipeline:
 
         for page in inspection_pages:
 
-            observations.extend(
+            page_observations = (
                 self.observation_extractor.extract(
                     page.text,
                     page.page_number
                 )
+            )
+
+            for observation in page_observations:
+
+                observation.image_ids = (
+                    page.image_paths[:3]
+                )
+
+            observations.extend(
+                page_observations
             )
 
         thermal_findings = []
@@ -148,7 +154,7 @@ class DDRPipeline:
 
         recommendations = []
 
-        area_narratives = []
+        llm_findings = []
 
         conflicts = []
 
@@ -193,18 +199,19 @@ class DDRPipeline:
                 recommendation
             )
 
-            narrative = (
-                NarrativeGenerator()
-                .generate_area_narrative(
-                    observation=bundle.observations[0],
-                    root_cause=root_cause,
-                    severity=severity,
-                    recommendation=recommendation
-                )
-            )
-
-            area_narratives.append(
-                narrative.narrative
+            llm_findings.append(
+                {
+                    "area": bundle.area,
+                    "issue": bundle.observations[0].issue,
+                    "description":
+                    bundle.observations[0].description,
+                    "root_cause":
+                    root_cause.cause,
+                    "severity":
+                    severity.level.value,
+                    "recommendation":
+                    recommendation.recommendation,
+                }
             )
 
             conflicts.extend(
@@ -234,11 +241,13 @@ class DDRPipeline:
             )
         )
 
+        intelligence = (
+            DDRIntelligenceGenerator()
+            .generate(llm_findings)
+        )
+
         summary = (
-            ExecutiveSummaryGenerator()
-            .generate(
-                area_narratives
-            )
+            intelligence.executive_summary
         )
 
         return self.ddr_assembler.assemble(
@@ -257,7 +266,7 @@ class DDRPipeline:
             recommendations,
 
             area_narratives=
-            area_narratives,
+            intelligence.area_narratives,
 
             conflicts=
             conflicts,

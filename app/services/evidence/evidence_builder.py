@@ -70,6 +70,18 @@ class EvidenceBuilder:
                     if f not in correlated_findings:
                         correlated_findings.append(f)
 
+            inspection_images = []
+
+            for observation in area_observations:
+
+                for image in observation.image_ids:
+
+                    if image not in inspection_images:
+
+                        inspection_images.append(
+                            image
+                        )
+
             bundles.append(
                 EvidenceBundle(
                     area=area,
@@ -77,7 +89,8 @@ class EvidenceBuilder:
                     observations=
                     area_observations,
 
-                    inspection_images=[],
+                    inspection_images=
+                    inspection_images[:1],
 
                     thermal_images=[],
 

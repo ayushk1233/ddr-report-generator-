@@ -27,7 +27,7 @@ class HTMLRenderer:
 
         self.template = (
             environment.get_template(
-                "report_template_v3.html"
+                "report_template_v5.html"
             )
         )
 
@@ -41,7 +41,13 @@ class HTMLRenderer:
             .format(report)
         )
 
+        project_root = (
+            Path(__file__)
+            .parent.parent.parent.parent
+        )
+
         return self.template.render(
             report=report,
-            sections=sections
+            sections=sections,
+            project_root=project_root
         )

@@ -1,5 +1,5 @@
 
-from app.services.pdf.image_extractor import ImageExtractor
+from app.services.extraction.image_extractor import ImageExtractor
 
 
 def test_image_extractor_creation():

@@ -27,6 +27,12 @@ class ReportFormatter:
                     observations=
                     bundle.observations,
 
+                    inspection_images=
+                    bundle.inspection_images,
+
+                    thermal_images=
+                    bundle.thermal_images,
+
                     thermal_findings=
                     bundle.thermal_findings,
 

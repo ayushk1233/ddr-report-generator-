@@ -13,6 +13,10 @@ class ReportSection(BaseModel):
 
     observations: list[Observation]
 
+    inspection_images: list[str]
+
+    thermal_images: list[str]
+
     thermal_findings: list[ThermalFinding]
 
     root_cause: RootCause

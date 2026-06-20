@@ -22,3 +22,5 @@ weasyprint==66.0
 google-genai
 
 openai 
+
+streamlit 

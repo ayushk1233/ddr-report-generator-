@@ -12,3 +12,5 @@ outputs/
 temp/
 
 .DS_Store
+
+app/storage/
