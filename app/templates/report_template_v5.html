@@ -333,7 +333,7 @@ LOW
     </span>
 </p>
 
-{% for image in section.inspection_images[:2] %}
+{% for image in section.inspection_images[:3] %}
 
 <img
     class="report-image"
@@ -348,7 +348,20 @@ LOW
     <span class="label">Thermal Evidence:</span>
 </p>
 
-{% if section.thermal_findings %}
+{% if section.thermal_images %}
+
+{% for image in section.thermal_images[:2] %}
+
+<img
+    class="report-image"
+    src="file://{{ project_root }}/{{ image }}"
+>
+
+{% endfor %}
+
+{% endif %}
+
+{% if section.thermal_findings or section.thermal_images %}
 
 <ul>
 

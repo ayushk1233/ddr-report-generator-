@@ -18,3 +18,7 @@ class ThermalFinding(BaseModel):
     anomaly_type: str
 
     confidence: float
+
+    thermal_image_path: str | None = None
+
+    visible_image_path: str | None = None

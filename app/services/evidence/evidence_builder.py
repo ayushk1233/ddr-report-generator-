@@ -50,12 +50,7 @@ class EvidenceBuilder:
                 if finding.area == area
             ]
 
-            if not area_thermal_findings:
 
-                area_thermal_findings = [
-                    f for f in thermal_findings
-                    if f.area is None
-                ]
 
             correlator = ThermalCorrelator()
             
@@ -65,10 +60,16 @@ class EvidenceBuilder:
             )
             
             correlated_findings = []
+
             for findings in mapping.values():
-                for f in findings:
-                    if f not in correlated_findings:
-                        correlated_findings.append(f)
+
+                for finding in findings:
+
+                    if finding not in correlated_findings:
+
+                        correlated_findings.append(
+                            finding
+                        )
 
             inspection_images = []
 
@@ -82,6 +83,20 @@ class EvidenceBuilder:
                             image
                         )
 
+            thermal_images = []
+
+            for finding in correlated_findings:
+
+                if (
+                    finding.thermal_image_path
+                    and
+                    finding.thermal_image_path
+                    not in thermal_images
+                ):
+                    thermal_images.append(
+                        finding.thermal_image_path
+                    )
+
             bundles.append(
                 EvidenceBundle(
                     area=area,
@@ -90,9 +105,9 @@ class EvidenceBuilder:
                     area_observations,
 
                     inspection_images=
-                    inspection_images[:1],
+                    inspection_images[:3],
 
-                    thermal_images=[],
+                    thermal_images=thermal_images,
 
                     thermal_findings=
                     correlated_findings,

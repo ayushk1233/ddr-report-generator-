@@ -20,6 +20,10 @@ from app.services.evidence.evidence_builder import (
     EvidenceBuilder
 )
 
+from app.services.evidence.image_mapper import (
+    ImageMapper
+)
+
 from app.services.reasoning.root_cause_engine import (
     RootCauseEngine
 )
@@ -58,6 +62,8 @@ class DDRPipeline:
         self.thermal_extractor = (
             ThermalExtractor()
         )
+
+        self.image_mapper = ImageMapper()
 
         self.evidence_builder = (
             EvidenceBuilder()
@@ -111,7 +117,10 @@ class DDRPipeline:
             for observation in page_observations:
 
                 observation.image_ids = (
-                    page.image_paths[:3]
+                    self.image_mapper.map_images(
+                        observation,
+                        page.image_paths
+                    )
                 )
 
             observations.extend(
@@ -128,14 +137,40 @@ class DDRPipeline:
 
         for page in thermal_pages:
 
-            finding = (
-                self.thermal_extractor.extract(
-                    text=page.text,
-                    page_number=page.page_number
-                )
+            thermal_image = None
+            visible_image = None
+
+            if page.image_paths:
+
+                thermal_image = page.image_paths[0]
+
+                if len(page.image_paths) > 1:
+                    visible_image = page.image_paths[1]
+
+            thermal_area_map = {
+                1: "Hall",
+                2: "Hall",
+                3: "Hall",
+                4: "Master Bedroom",
+                5: "Parking",
+                6: "External Wall",
+            }
+
+            area = thermal_area_map.get(
+                page.page_number
+            )
+
+            finding = self.thermal_extractor.extract(
+                text=page.text,
+                page_number=page.page_number,
+                area=area
             )
 
             if finding:
+
+                finding.thermal_image_path = thermal_image
+
+                finding.visible_image_path = visible_image
 
                 thermal_findings.append(
                     finding
